@@ -36,8 +36,6 @@ public class MovimientoDinero {
     }
 
 
-    public Long getId() {return this.id;}
-
     public String getMontoDinero() {
         return this.montoDinero;
     }

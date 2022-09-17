@@ -1,0 +1,34 @@
+/*package com.example.Yerizk.controllers;
+
+
+import com.example.Yerizk.model.Empresa;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class EmpresaController {
+
+
+    servicioEmpresa se1;
+
+    public EmpresaController(ServicioEmpresa) {this.se1 = se1;}
+
+    @GetMapping("/enterprise")
+    public List <Empresa> informacion() {return this.se1.getInformacion();}
+
+    @PatchMapping("/enterprise")
+    public Empresa crearEmpresa(@RequestBody Empresa e){return this.se1.crearEmpresa (e);}
+
+    @PutMapping("/enterprise/{id}")
+    public Empresa actualizarEmpresa(@PathVariable long id,@RequestBody Empresa e) {...}
+
+    @DeleteMapping("/enterprise/{id}")
+    public Empresa eliminarEmpresa(@PathVariable (value ="id") Long id)
+    {
+        return this.se1.eliminarEmpresa(id);
+    }
+
+
+    }
+
+}
+/*

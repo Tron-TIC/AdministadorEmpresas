@@ -26,7 +26,7 @@ public class MovimientoDineroController {
         return ResponseEntity.ok().body(this.EmpresaService.ListarMovimientos());
     }
 
-    @PostMapping("/enterprises/movements/{id}")
+    @PostMapping("/enterprises/movements")
     public MovimientoDinero crearMovimiento(@RequestBody MovimientoDinero Movimiento)
     {
         return EmpresaService.saveMovimiento(Movimiento);

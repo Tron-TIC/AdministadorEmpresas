@@ -31,7 +31,7 @@ public class EmpresaController {
         return EmpresaService.save(Empresa);
     }
 
-    @PutMapping("/enterprise/Actualizar")
+    @PutMapping("/enterprise/Actualizar/{id}")
     public ResponseEntity<Empresa> EmpresaUpdate (@RequestBody EmpresaDto Empresa)
     {
     return ResponseEntity.ok().body(this.EmpresaService.UpdateEmpresa(Empresa));

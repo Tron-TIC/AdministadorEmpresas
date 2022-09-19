@@ -82,7 +82,7 @@ public class EmpresaService {
 
     public String eliminarEmpresa(Long id) {
         RepositorioEmpresa.deleteById(id);
-        return "Empleado eliminado Exitosamente";
+        return "Empresa eliminada Exitosamente";
     }
 
     public void  eliminarMovimiento (Integer id) {

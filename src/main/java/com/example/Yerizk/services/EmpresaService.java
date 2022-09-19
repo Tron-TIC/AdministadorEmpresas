@@ -1,9 +1,7 @@
 package com.example.Yerizk.services;
 
-import com.example.Yerizk.dto.EmpresaDto;
 import com.example.Yerizk.model.Empresa;
 import com.example.Yerizk.model.MovimientoDinero;
-import com.example.Yerizk.repositories.RepositorioEmpleado;
 import com.example.Yerizk.repositories.RepositorioEmpresa;
 import com.example.Yerizk.repositories.RepositorioMovimientoDinero;
 
@@ -33,15 +31,58 @@ public class EmpresaService {
         return this.RepositorioMovimientoDinero.findAll();
     }
 
-    public EmpresaDto save(EmpresaDto Empresa) {
-        Empresa nuevaEmpresa = new Empresa();
-        nuevaEmpresa.setTelefono(Empresa.getTelefono());
-        nuevaEmpresa.setDireccion(Empresa.getDireccion());
-        nuevaEmpresa.setNit(Empresa.getNit());
-        nuevaEmpresa.setNombre(Empresa.getNombre());
-        this.RepositorioEmpresa.save(nuevaEmpresa);
-        return Empresa;
+    public Empresa getEmpresa(Long id) throws Exception {
+        Optional<Empresa> empresaOptional = RepositorioEmpresa.findById(id);
+        if(empresaOptional.isPresent()){
+            return empresaOptional.get();
+        }else{
+            throw new Exception("Empresa No Existe");
+        }
     }
+
+    public MovimientoDinero getMovimientoDinero(Long id) throws Exception {
+        Optional<MovimientoDinero> movimientoDineroOptional = RepositorioMovimientoDinero.findById(id);
+        if(movimientoDineroOptional.isPresent()){
+            return movimientoDineroOptional.get();
+        }else{
+            throw new Exception("Movimiento No Existe");
+        }
+    }
+
+    public Empresa saveEmpresa(Empresa empresa_param){
+        return RepositorioEmpresa.save(empresa_param);
+    }
+
+    public Empresa putEmpresa(Empresa empresa_param){
+        return RepositorioEmpresa.save(empresa_param);
+    }
+    public String eliminarEmpresa(Long id) {
+        RepositorioEmpresa.deleteById(id);
+        return "Empresa eliminada Exitosamente";
+    }
+    public Empresa patchEmpresa(Empresa empresa_param, Long id) throws Exception {
+        try {
+            Empresa EmpresaBd = getEmpresa(id);
+
+            if (empresa_param.getNombre() != null) {
+                EmpresaBd.setNombre(empresa_param.getNombre());
+            }
+            if (empresa_param.getDireccion() != null) {
+                EmpresaBd.setDireccion(empresa_param.getDireccion());
+            }
+            if (empresa_param.getTelefono() != null) {
+                EmpresaBd.setTelefono(empresa_param.getTelefono());
+            }
+            if (empresa_param.getNit() != null) {
+                EmpresaBd.setNit(empresa_param.getNit());
+            }
+            return saveEmpresa(EmpresaBd);
+
+        } catch (Exception e) {
+            throw new Exception("Empresa no se actualizo, porque no existe");
+        }
+    }
+
 
     public MovimientoDinero saveMovimiento(MovimientoDinero movimientoDinero) {
         MovimientoDinero nuevoMovimiento = new MovimientoDinero();
@@ -53,19 +94,6 @@ public class EmpresaService {
         return movimientoDinero;
     }
 
-    public Empresa UpdateEmpresa(EmpresaDto Empresa) {
-        Optional<Empresa> EmpresaUpdate = this.RepositorioEmpresa.findById(Empresa.getId());
-        if (EmpresaUpdate.isPresent()) {
-            EmpresaUpdate.get().setTelefono(Empresa.getTelefono());
-            EmpresaUpdate.get().setDireccion(Empresa.getDireccion());
-            EmpresaUpdate.get().setNit(Empresa.getNit());
-            EmpresaUpdate.get().setNombre(Empresa.getNombre());
-            this.RepositorioEmpresa.save(EmpresaUpdate.get());
-            return EmpresaUpdate.get();
-
-        }
-        return new Empresa();
-    }
 
     public MovimientoDinero updateMovimiento(MovimientoDinero movimientoDinero) {
         Optional<MovimientoDinero> MovimientoUpdate = this.RepositorioMovimientoDinero.findById(movimientoDinero.getId());
@@ -80,24 +108,41 @@ public class EmpresaService {
         return new MovimientoDinero();
     }
 
-    public String eliminarEmpresa(Long id) {
+
+    public String deleteMovimiento(Long id) {
         RepositorioEmpresa.deleteById(id);
-        return "Empresa eliminada Exitosamente";
+        return "Movimiento eliminado Exitosamente";
     }
 
-    public void  eliminarMovimiento (Integer id) {
-        RepositorioEmpresa.deleteById(Long.valueOf(id));
+    public MovimientoDinero patchMovimientoDinero(MovimientoDinero movimiento_param, Long id) throws Exception {
+        try {
+            MovimientoDinero movimientoBd = getMovimientoDinero(id);
 
+            if(movimiento_param.getMontoDinero() != null){
+                movimientoBd.setMontoDinero(movimiento_param.getMontoDinero());
+            }
+            if(movimiento_param.getMontoPositivo() != null){
+                movimientoBd.setMontoPositivo(movimiento_param.getMontoPositivo());
+            }
+            if(movimiento_param.getMontoNegativo() != null){
+                movimientoBd.setMontoNegativo(movimiento_param.getMontoNegativo());
+            }
+            if(movimiento_param.getConceptoMovimiento() != null){
+                movimientoBd.setConceptoMovimiento(movimiento_param.getConceptoMovimiento());
+            }
+            if(movimiento_param.getUsuarioEncargado() != null){
+                movimientoBd.setUsuarioEncargado(movimiento_param.getUsuarioEncargado());
+            }
+
+            return saveMovimiento(movimientoBd);
+
+        } catch (Exception e) {
+            throw new Exception("movimiento no se actualizo, porque no existe");
+        }
     }
+
+
 }
-
-
-
-
-
-
-
-
 
 
 

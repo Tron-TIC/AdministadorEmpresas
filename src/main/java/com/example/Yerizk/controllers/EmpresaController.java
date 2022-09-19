@@ -2,8 +2,10 @@ package com.example.Yerizk.controllers;
 
 
 import com.example.Yerizk.dto.EmpresaDto;
+import com.example.Yerizk.model.Empleado;
 import com.example.Yerizk.model.Empresa;
 import com.example.Yerizk.model.UserResponse;
+import com.example.Yerizk.repositories.RepositorioEmpresa;
 import com.example.Yerizk.services.EmpresaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,25 +18,42 @@ public class EmpresaController {
     private final EmpresaService EmpresaService;
 
 
-    public EmpresaController(EmpresaService EmpresaService){this.EmpresaService = EmpresaService;}
+    public EmpresaController(EmpresaService EmpresaService) {
+        this.EmpresaService = EmpresaService;
+    }
 
     @GetMapping("/enterprise")
-    public ResponseEntity<List<Empresa>>ListarEmpresas()
-    {
+    public ResponseEntity<List<Empresa>> ListarEmpresas() {
         return ResponseEntity.ok().body(this.EmpresaService.ListarEmpresas());
+
     }
 
+    @GetMapping("/enterprise/{id}")
+    public ResponseEntity<Object> getEmpleado(@PathVariable Long id){
 
-    @PostMapping ("/enterprise/crear")
-    public EmpresaDto crearEmpresa(@RequestBody EmpresaDto Empresa)
-    {
-        return EmpresaService.save(Empresa);
+        try {
+            Empresa empresa = EmpresaService.getEmpresa(id);
+            return new ResponseEntity<>(empresa,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PutMapping("/enterprise/Actualizar/{id}")
-    public ResponseEntity<Empresa> EmpresaUpdate (@RequestBody EmpresaDto Empresa)
-    {
-    return ResponseEntity.ok().body(this.EmpresaService.UpdateEmpresa(Empresa));
+    @PostMapping("/enterprise")
+    public ResponseEntity<UserResponse> postEmpresa(@RequestBody Empresa empresa){
+        return new ResponseEntity<>(
+
+                new UserResponse("Empresa Creado Exitosamente",
+                        EmpresaService.saveEmpresa(empresa))
+
+                ,HttpStatus.OK);
+    }
+    @PutMapping("/enterpraise/actualizar/{id}")
+    public ResponseEntity<UserResponse> putEmpresa(@RequestBody Empresa empresa){
+        return new ResponseEntity<>(
+                new UserResponse("Empresa Actualizada Exitosamente", EmpresaService.putEmpresa(empresa))
+                ,HttpStatus.OK);
     }
 
     @DeleteMapping("/enterprise/eliminar/{id}")
@@ -44,8 +63,24 @@ public class EmpresaController {
                 new UserResponse(EmpresaService.eliminarEmpresa(id), null),
                 HttpStatus.OK
         );
-
-
-
     }
+
+        @PatchMapping("/Empresa/actualizar/{id}")
+
+        public ResponseEntity<UserResponse> patchEmpresa (@RequestBody Empresa empresa, @PathVariable Long id){
+            try {
+                return new ResponseEntity<>(
+                        new UserResponse("Actualizacion Exitosa", EmpresaService.patchEmpresa(empresa, id)),
+                        HttpStatus.OK
+                );
+            } catch (Exception e) {
+                return new ResponseEntity<>(
+                        new UserResponse(e.getMessage(), null),
+                        HttpStatus.OK
+                );
+            }
+
+
+        }
+
 }

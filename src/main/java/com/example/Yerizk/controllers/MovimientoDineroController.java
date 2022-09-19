@@ -39,7 +39,8 @@ public class MovimientoDineroController {
     }
 
     @DeleteMapping("/enterprises/movements/{id}")
-    public void eliminar(@PathVariable("id") Integer id){
+    public void eliminar(@PathVariable("id") Integer id)
+    {
         EmpresaService.eliminarMovimiento(id);
     }
 }

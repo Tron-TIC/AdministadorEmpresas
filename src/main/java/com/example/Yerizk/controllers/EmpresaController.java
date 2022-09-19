@@ -3,7 +3,9 @@ package com.example.Yerizk.controllers;
 
 import com.example.Yerizk.dto.EmpresaDto;
 import com.example.Yerizk.model.Empresa;
+import com.example.Yerizk.model.UserResponse;
 import com.example.Yerizk.services.EmpresaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -34,10 +36,16 @@ public class EmpresaController {
     {
     return ResponseEntity.ok().body(this.EmpresaService.UpdateEmpresa(Empresa));
     }
+
     @DeleteMapping("/enterprise/eliminar/{id}")
-    public void eliminar(@PathVariable("id") Integer id){
-        EmpresaService.eliminarEmpresa(id);
+    public ResponseEntity<UserResponse> eliminarEmpresa(@PathVariable Long id) {
+        return new ResponseEntity<>(
+
+                new UserResponse(EmpresaService.eliminarEmpresa(id), null),
+                HttpStatus.OK
+        );
+
+
+
     }
-
-
 }

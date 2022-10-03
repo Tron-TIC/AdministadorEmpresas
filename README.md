@@ -9,3 +9,6 @@ Se realizan pruebas a los servicios
 "montoNegativo"
 "conceptoMovimiento"
 "usuarioEncargado"
+
+
+Se crean entidades y repositorios, se crea el Login

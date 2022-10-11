@@ -21,7 +21,7 @@ public class MovimientoDineroController {
         this.EmpleadoService = EmpleadoService;
     }
 
-    @GetMapping("/enterprises/movimientos")
+    @GetMapping("/enterprises/movimientos/{id}")
     public ResponseEntity<List<MovimientoDinero>> ListarMovimientos() {
         return ResponseEntity.ok().body(this.EmpresaService.ListarMovimientos());
     }
